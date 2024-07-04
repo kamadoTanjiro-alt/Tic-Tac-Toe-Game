@@ -22,24 +22,41 @@ const checkWinners = () => {
 
         if (post1 !== "" && post2 !== "" && post3 !== "") {
             if (post1 === post2 && post2 === post3) {
-                console.log("Winner: ", post1);
-                return;
+                alert("Winner: " + post1);
+                return true;
             }
         }
     }
+    return false;
+};
+
+const isTie = () => {
+    for (let box of boxes) {
+        if (box.innerText === "") {
+            return false;
+        }
+    }
+    return true;
 };
 
 boxes.forEach((box) => {
     box.addEventListener("click", () => {
-        if (turn0) {
-            box.innerText = "o";
-            turn0 = false;
-        } else {
-            box.innerText = "x";
-            turn0 = true;
+        if (box.innerText === "") {
+            if (turn0) {
+                box.innerText = "o";
+                turn0 = false;
+            } else {
+                box.innerText = "x";
+                turn0 = true;
+            }
+            box.disabled = true;
+
+            if (checkWinners()) {
+                boxes.forEach((b) => b.disabled = true);
+            } else if (isTie()) {
+                alert("It's a tie!");
+            }
         }
-        box.disabled = true;
-        checkWinners();
     });
 });
 
